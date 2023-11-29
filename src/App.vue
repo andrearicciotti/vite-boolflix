@@ -1,11 +1,14 @@
 <script>
 import { store } from './store';
 import SearchApp from './components/SearchApp.vue';
+import MainApp from './components/MainApp.vue';
+import axios from 'axios';
 
 export default {
 
   components: {
     SearchApp,
+    MainApp,
   },
 
   data() {
@@ -16,7 +19,22 @@ export default {
 
   methods: {
     handleSearch() {
-      console.log(this.store.curText);
+      console.log(this.store.searchText);
+      this.store.loading = true
+      this.store.params.query = this.store.searchText
+
+      axios
+        .get(this.store.filmPath, {
+          params: this.store.params,
+        })
+        .then((resp) => {
+          console.log(resp);
+          this.store.films = resp.data.results;
+          console.log(this.store.films);
+        })
+        .finally(() => {
+          this.store.loading = false;
+        }) 
     }
   }
 }
@@ -24,6 +42,7 @@ export default {
 
 <template>
   <SearchApp @searchTyped="handleSearch()" />
+  <MainApp />
 </template>
 
 <style lang="scss">

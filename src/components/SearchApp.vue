@@ -12,7 +12,7 @@ export default {
 <template>
     <header>
         <nav>
-            <input type="search" id="search" v-model.trim="store.curText">
+            <input type="search" id="search" v-model.trim="store.searchText">
             <label for="search">Find a film or tvShow</label>
             <button @click="$emit('searchTyped')">Search</button>
         </nav>
