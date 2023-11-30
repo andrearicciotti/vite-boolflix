@@ -24,13 +24,13 @@ export default {
       this.store.params.query = this.store.searchText
 
       axios
-        .get(this.store.filmPath, {
+        .get(this.store.baseUrl + this.store.filmPath, {
           params: this.store.params,
         })
         .then((resp) => {
           console.log(resp);
           this.store.films = resp.data.results;
-          console.log(this.store.films);
+          console.log(this.store.films[0]);
         })
         .finally(() => {
           this.store.loading = false;

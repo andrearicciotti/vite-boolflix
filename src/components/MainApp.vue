@@ -1,10 +1,11 @@
 <script>
 import { store } from '../store';
+import CardMain from './CardMain.vue';
 
 export default {
 
     components: {
-
+        CardMain,
     },
 
     data() {
@@ -25,9 +26,7 @@ export default {
             <ul>
                 <h3>lista film</h3>
                 <li v-for="film in store.films">
-                    {{ film.original_title }} <br>
-                    {{ film.original_language }} <br>
-                    {{ film.overview }}
+                    <CardMain :film="film" />
                 </li>
             </ul>
         </section>
