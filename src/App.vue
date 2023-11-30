@@ -30,11 +30,24 @@ export default {
         .then((resp) => {
           console.log(resp);
           this.store.films = resp.data.results;
-          console.log(this.store.films[0]);
+          console.log(this.store.films);
         })
         .finally(() => {
           this.store.loading = false;
-        }) 
+        })
+
+      axios
+        .get(this.store.baseUrl + this.store.tvSeriesPath, {
+          params: this.store.params,
+        })
+        .then((resp) => {
+          console.log(resp);
+          this.store.tvSeries = resp.data.results;
+          console.log(this.store.tvSeries);
+        })
+        .finally(() => {
+          this.store.loading = false;
+        })
     }
   }
 }

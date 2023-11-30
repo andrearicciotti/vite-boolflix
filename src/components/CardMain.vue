@@ -1,6 +1,5 @@
 <script>
 import { store } from '../store';
-import axios from 'axios';
 export default {
     data() {
         return {
@@ -8,7 +7,7 @@ export default {
         }
     },
     props: {
-        film: Object,
+        media: Object,
     },
     methods: {
         handleFlags(language) {
@@ -25,10 +24,12 @@ export default {
 </script>
 
 <template>
-    <h2>{{ film.title }}</h2>
-    <h3>{{ film.original_title }}</h3>
-    <img v-if="handleFlags" :src="handleFlags(film.original_language)" :alt="`Language: ${film.original_language}`">
-    <p>{{ film.vote_average }}</p>
+    <h3 v-if="media.title">Titolo: {{ media.title }}</h3>
+    <h3 v-else-if="media.name">Titolo: {{ media.name }}</h3>
+    <h4 v-if="media.original_title">Titolo originale: {{ media.original_title }}</h4>
+    <h4 v-else-if="media.original_name">Titolo originale: {{ media.original_name }}</h4>
+    <img v-if="handleFlags" :src="handleFlags(media.original_language)" :alt="`Language: ${media.original_language}`">
+    <p>Media voti: {{ media.vote_average }}</p>
 </template>
 
 <style lang="scss" scoped></style>
