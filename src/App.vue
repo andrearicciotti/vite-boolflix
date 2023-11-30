@@ -28,7 +28,7 @@ export default {
           params: this.store.params,
         })
         .then((resp) => {
-          console.log(resp);
+          // console.log(resp);
           this.store.films = resp.data.results;
           console.log(this.store.films);
         })
@@ -41,7 +41,7 @@ export default {
           params: this.store.params,
         })
         .then((resp) => {
-          console.log(resp);
+          // console.log(resp);
           this.store.tvSeries = resp.data.results;
           console.log(this.store.tvSeries);
         })
@@ -60,4 +60,5 @@ export default {
 
 <style lang="scss">
 @import './style/general.scss';
+@import '@fortawesome/fontawesome-free/css/all.css'
 </style>
