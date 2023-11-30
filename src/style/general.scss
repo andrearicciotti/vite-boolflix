@@ -1,2 +1,23 @@
 @use './partials/mixins' as *;
 @use './partials/variables' as *;
+@import '@fontsource/lobster-two';
+@import '@fontsource-variable/sora';
+@import '@fontsource-variable/jura';
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    max-height: 100%;
+}
+
+body {
+    font-family: 'Lobster Two', sans-serif;
+    background-color: $aqua-color;
+    color: white;
+}

@@ -59,6 +59,8 @@ export default {
 </template>
 
 <style lang="scss">
+@use './style/partials/mixins' as *;
+@use './style/partials/variables' as *;
 @import './style/general.scss';
-@import '@fortawesome/fontawesome-free/css/all.css'
+@import '@fortawesome/fontawesome-free/css/all.css';
 </style>
