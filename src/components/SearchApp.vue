@@ -19,7 +19,7 @@ export default {
             <div class="searchbar">
 
                 <label for="search">Find a film or TV Show :</label>
-                <input placeholder="" type="search" id="search" v-model.trim="store.searchText">
+                <input @keyup.enter="$emit('searchTyped')" placeholder="" type="search" id="search" v-model.trim="store.searchText">
                 <button @click="$emit('searchTyped')">Search</button>
 
             </div>
@@ -34,10 +34,6 @@ export default {
 header {
     background-color: $orange-color;
     color: white;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 999;
     width: 100%;
 
     nav {

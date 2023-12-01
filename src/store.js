@@ -13,4 +13,7 @@ export const store = reactive({
     },
     baseImgUrl: 'https://image.tmdb.org/t/p/',
     loading: false,
+    activeFilm: 0,
+    activeTv: 0,
+    cardFocus: false,
 })

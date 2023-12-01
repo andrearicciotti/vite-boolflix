@@ -48,14 +48,21 @@ export default {
         .finally(() => {
           this.store.loading = false;
         })
+    },
+    stopPreview() {
+      this.store.cardFocus = false;
     }
   }
 }
 </script>
 
 <template>
-  <SearchApp @searchTyped="handleSearch()" />
-  <MainApp />
+  <div class="wrapper" :class="[store.cardFocus ? 'bg-opacity' : '']" @click.stop="stopPreview">
+
+    <SearchApp @searchTyped="handleSearch()" />
+    <MainApp />
+
+  </div>
 </template>
 
 <style lang="scss">
@@ -63,4 +70,14 @@ export default {
 @use './style/partials/variables' as *;
 @import './style/general.scss';
 @import '@fortawesome/fontawesome-free/css/all.css';
+
+.wrapper {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.bg-opacity {
+  background-color: rgba($color: #000000, $alpha: 0.8);
+}
 </style>

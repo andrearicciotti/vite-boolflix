@@ -12,6 +12,7 @@ export default {
     methods: {
         handleFlags(language) {
             language === 'en' ? language = 'GB' : language;
+            language === 'ja' ? language = 'JP' : language;
             const lang = language.toUpperCase()
             const flagsBaseUrl = 'https://flagsapi.com/';
             const flagsSizeUrl = '/shiny/64.png';
@@ -26,56 +27,121 @@ export default {
             return this.store.baseImgUrl + 'w342' + posterPath;
         },
         handleOverview(overview) {
-            console.log(overview, overview.length);
-            let newString =  overview.substring(0,140);
+            // console.log(overview, overview.length);
+            let newString = overview.substring(0, 140);
             return newString += '...';
-        }
+        },
+        handleTitle(title) {
+            let newString = title;
+            if (newString.length > 20) {
+                newString = title.substring(0, 25);
+                return newString += '...';
+            }
+            return newString;
+        },
+
     }
 }
 </script>
 
 <template>
-    <div class="poster">
+    <div v-if="store.cardFocus" class="card-focus">
+        <div class="info">
 
-        <img :src="handlePosterPath(media.poster_path)" :alt="media.title ? media.title : media.original_name">
+            <h2 v-if="media.title">Titolo : </h2>
+            <h3 v-if="media.title">{{ media.title }}</h3>
 
+            <h2 v-else-if="media.name">Titolo :</h2>
+            <h3 v-else-if="media.name">{{ media.name }}</h3>
+
+            <h3 v-if="media.original_title">Titolo originale : </h3>
+            <h4 v-if="media.original_title">{{ media.original_title }}</h4>
+
+            <h3 v-else-if="media.original_name">Titolo originale : </h3>
+            <h4 v-else-if="media.original_name">{{ media.original_name }}
+            </h4>
+
+            <img class="flag" v-if="media.original_language" :src="handleFlags(media.original_language)"
+                :alt="`Language: ${media.original_language}`">
+
+            <p v-if="media.overview" class="caption"><strong>Descrizione : </strong>{{ media.overview }}</p>
+
+            <img v-if="media.backdrop_path" class="backdrop-img" :src="handleImgPath(media.backdrop_path)"
+                :alt="media.title ? media.title : media.original_name">
+
+            <h3>{{ media.vote_average }}</h3>
+            <div class="vote-average">
+                <i v-if="Math.ceil(media.vote_average) >= 2" class="fa-solid fa-star"></i>
+                <i v-else-if="Math.ceil(media.vote_average) >= 1" class="fa-solid fa-star-half-stroke"></i>
+                <i v-else class="fa-regular fa-star"></i>
+
+                <i v-if="Math.ceil(media.vote_average) >= 4" class="fa-solid fa-star"></i>
+                <i v-else-if="Math.ceil(media.vote_average) >= 3" class="fa-solid fa-star-half-stroke"></i>
+                <i v-else class="fa-regular fa-star"></i>
+
+                <i v-if="Math.ceil(media.vote_average) >= 6" class="fa-solid fa-star"></i>
+                <i v-else-if="Math.ceil(media.vote_average) >= 5" class="fa-solid fa-star-half-stroke"></i>
+                <i v-else class="fa-regular fa-star"></i>
+
+                <i v-if="Math.ceil(media.vote_average) >= 8" class="fa-solid fa-star"></i>
+                <i v-else-if="Math.ceil(media.vote_average) >= 7" class="fa-solid fa-star-half-stroke"></i>
+                <i v-else class="fa-regular fa-star"></i>
+
+                <i v-if="Math.ceil(media.vote_average) >= 10" class="fa-solid fa-star"></i>
+                <i v-else-if="Math.ceil(media.vote_average) >= 9" class="fa-solid fa-star-half-stroke"></i>
+                <i v-else class="fa-regular fa-star"></i>
+            </div>
+
+        </div>
     </div>
-    <div class="info">
+    <div v-else class="poster-info">
 
-        <h3 v-if="media.title"><strong></strong>{{ media.title }}</h3>
+        <div v-if="media.poster_path" class="poster">
 
-        <h3 v-else-if="media.name"><strong>Titolo : </strong>{{ media.name }}</h3>
+            <img :src="handlePosterPath(media.poster_path)" :alt="media.title ? media.title : media.original_name">
 
-        <h4 v-if="media.original_title"><strong>Titolo originale : </strong>{{ media.original_title }}</h4>
+        </div>
+        <div class="info">
 
-        <h4 v-else-if="media.original_name"><strong>Titolo originale : </strong>{{ media.original_name }}</h4>
+            <h3 v-if="media.title">{{ handleTitle(media.title) }}</h3>
 
-        <img v-if="handleFlags" :src="handleFlags(media.original_language)" :alt="`Language: ${media.original_language}`">
+            <h3 v-else-if="media.name">{{ handleTitle(media.name) }}</h3>
 
-        <p v-if="media.overview" class="caption"><strong>Descrizione : </strong>{{ handleOverview(media.overview) }}</p>
+            <h4 v-if="media.original_title"><strong>Titolo originale : </strong>{{ handleTitle(media.original_title) }}</h4>
 
-        <img class="backdrop-img" :src="handleImgPath(media.backdrop_path)" :alt="media.title ? media.title : media.original_name">
+            <h4 v-else-if="media.original_name"><strong>Titolo originale : </strong>{{ handleTitle(media.original_name) }}
+            </h4>
 
-        <div class="vote-average">
-            <i v-if="Math.ceil(media.vote_average) >= 2" class="fa-solid fa-star"></i>
-            <i v-else-if="Math.ceil(media.vote_average) >= 1" class="fa-solid fa-star-half-stroke"></i>
-            <i v-else class="fa-regular fa-star"></i>
+            <img class="flag" v-if="media.original_language" :src="handleFlags(media.original_language)"
+                :alt="`Lang: ${media.original_language}`">
 
-            <i v-if="Math.ceil(media.vote_average) >= 4" class="fa-solid fa-star"></i>
-            <i v-else-if="Math.ceil(media.vote_average) >= 3" class="fa-solid fa-star-half-stroke"></i>
-            <i v-else class="fa-regular fa-star"></i>
+            <p v-if="media.overview" class="caption"><strong>Descrizione : </strong>{{ handleOverview(media.overview) }}</p>
 
-            <i v-if="Math.ceil(media.vote_average) >= 6" class="fa-solid fa-star"></i>
-            <i v-else-if="Math.ceil(media.vote_average) >= 5" class="fa-solid fa-star-half-stroke"></i>
-            <i v-else class="fa-regular fa-star"></i>
+            <img v-if="media.backdrop_path" class="backdrop-img" :src="handleImgPath(media.backdrop_path)"
+                :alt="media.title ? media.title : media.original_name">
 
-            <i v-if="Math.ceil(media.vote_average) >= 8" class="fa-solid fa-star"></i>
-            <i v-else-if="Math.ceil(media.vote_average) >= 7" class="fa-solid fa-star-half-stroke"></i>
-            <i v-else class="fa-regular fa-star"></i>
+            <div class="vote-average">
+                <i v-if="Math.ceil(media.vote_average) >= 2" class="fa-solid fa-star"></i>
+                <i v-else-if="Math.ceil(media.vote_average) >= 1" class="fa-solid fa-star-half-stroke"></i>
+                <i v-else class="fa-regular fa-star"></i>
 
-            <i v-if="Math.ceil(media.vote_average) >= 10" class="fa-solid fa-star"></i>
-            <i v-else-if="Math.ceil(media.vote_average) >= 9" class="fa-solid fa-star-half-stroke"></i>
-            <i v-else class="fa-regular fa-star"></i>
+                <i v-if="Math.ceil(media.vote_average) >= 4" class="fa-solid fa-star"></i>
+                <i v-else-if="Math.ceil(media.vote_average) >= 3" class="fa-solid fa-star-half-stroke"></i>
+                <i v-else class="fa-regular fa-star"></i>
+
+                <i v-if="Math.ceil(media.vote_average) >= 6" class="fa-solid fa-star"></i>
+                <i v-else-if="Math.ceil(media.vote_average) >= 5" class="fa-solid fa-star-half-stroke"></i>
+                <i v-else class="fa-regular fa-star"></i>
+
+                <i v-if="Math.ceil(media.vote_average) >= 8" class="fa-solid fa-star"></i>
+                <i v-else-if="Math.ceil(media.vote_average) >= 7" class="fa-solid fa-star-half-stroke"></i>
+                <i v-else class="fa-regular fa-star"></i>
+
+                <i v-if="Math.ceil(media.vote_average) >= 10" class="fa-solid fa-star"></i>
+                <i v-else-if="Math.ceil(media.vote_average) >= 9" class="fa-solid fa-star-half-stroke"></i>
+                <i v-else class="fa-regular fa-star"></i>
+            </div>
+
         </div>
 
     </div>
@@ -85,50 +151,76 @@ export default {
 @use '../style/partials/variables' as *;
 @use '../style/partials/mixins' as *;
 
-.poster {
-    height: 100%;
-    width: 100%;
-    display: block;
+.card-focus {
     position: absolute;
-    top: 0;
-    z-index: 1;
 
-    img {
-        display: block;
-    }
-    
-    &:hover {
-        display: none;
+    .info {
+        height: 100%;
+    width: 100%;
     }
 }
 
-
-.info {
+.poster-info {
     height: 100%;
     width: 100%;
-    padding: .5rem;
-    display: block;
-    position: absolute;
-    @include flex (column, start, center);
-    gap: .5rem;
 
-    .backdrop-img {
-        margin-top: auto;
+    .poster {
+        height: 100%;
+        width: 100%;
+        display: block;
+        position: absolute;
+        top: 0;
+        z-index: 1;
+
+        img {
+            display: block;
+            max-width: 233px;
+            min-height: 350px;
+        }
+
+        &:hover {
+            display: none;
+        }
     }
 
-    &:hover {
-        z-index: 2;
-        background-color: rgba($color: #000000, $alpha: 0.7);
-    }
 
-    .caption {
-        display: inline-block;
-        max-height: 30px;
-        font-size: .7rem;
-    }
+    .info {
+        height: 100%;
+        min-width: 233px;
+        width: 100%;
+        padding: .5rem;
+        display: block;
+        position: absolute;
+        @include flex (column, start, center);
+        gap: .5rem;
 
-    h4 {
-        font-size: .9rem;
+        .backdrop-img {
+            margin: auto 0 0 0;
+        }
+
+        .vote-average {
+            margin-top: auto;
+        }
+
+        &:hover {
+            z-index: 2;
+            background-color: rgba($color: $orange-color, $alpha: 0.8);
+        }
+
+        .caption {
+            display: inline-block;
+            max-height: 30px;
+            font-size: .7rem;
+        }
+
+        h4 {
+            font-size: .9rem;
+        }
+
+        .flag {
+            width: 48px;
+            aspect-ratio: 1;
+        }
     }
 
 }
