@@ -72,7 +72,6 @@ main {
             li {
                 list-style-type: none;
                 flex-shrink: 0;
-                @include flex (column, start, center);
                 flex-wrap: wrap;
                 width: 220px;
                 height: 100%;
